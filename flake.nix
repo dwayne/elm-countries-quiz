@@ -36,9 +36,10 @@
 
         serve = pkgs.callPackage ./nix/serve.nix {};
 
-        mkApp = drv: {
+        mkApp = { drv, description }: {
           type = "app";
           program = "${drv}";
+          meta.description = description;
         };
       in
       {
@@ -105,7 +106,10 @@
 
         apps = {
           default = self.apps.${system}.app;
-          app = mkApp (serve { root = app; });
+          app = mkApp {
+            drv = serve { root = app; };
+            description = "The elm-countries-quiz web application";
+          };
         };
 
         checks = {
