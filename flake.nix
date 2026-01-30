@@ -1,7 +1,7 @@
 {
   inputs = {
     elm2nix = {
-      url = "github:dwayne/elm2nix?rev=c07881d3aa0d8faea70e9520c91195ddd08d1257";
+      url = "github:dwayne/elm2nix";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
