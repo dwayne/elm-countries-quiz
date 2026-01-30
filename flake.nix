@@ -1,7 +1,7 @@
 {
   inputs = {
     elm2nix = {
-      url = "github:dwayne/elm2nix?rev=299b538e71e41986dfba9a6863ded52266c6d22c";
+      url = "github:dwayne/elm2nix?rev=c07881d3aa0d8faea70e9520c91195ddd08d1257";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
@@ -15,24 +15,12 @@
           buildElmApplication
           generateRegistryDat
           prepareElmHomeScript
-          mkPatch
-          installPatchScript;
+          installPatchesScript;
 
         app = pkgs.callPackage ./nix/app.nix {
           inherit generateRegistryDat prepareElmHomeScript;
 
-          #
-          # N.B. This suggests there is a need to make the installation of multiple patches,
-          #      whether as derivations already created from mkPatch or as attribute sets that
-          #      are arguments to mkPatch, as easy as possible to do.
-          #
-          #      For e.g. I should be able to do:
-          #
-          #        esvdPatches = installPatchesScript elm2nix.lib.elmSafeVirtualDom.default
-          #
-          esvdPatches = pkgs.lib.concatStringsSep "\n" (
-            builtins.map (p: installPatchScript (mkPatch p)) elm2nix.lib.elmSafeVirtualDom.default
-          );
+          esvdPatches = installPatchesScript elm2nix.lib.elmSafeVirtualDom.default;
         };
 
         elm = pkgs.callPackage ./nix/elm.nix {
