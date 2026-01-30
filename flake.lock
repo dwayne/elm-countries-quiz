@@ -10,16 +10,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1767865274,
-        "narHash": "sha256-if4B6DLSmn9sxPhhHoeX8y9gSkoWu/reOWM21jE0nzo=",
+        "lastModified": 1769771888,
+        "narHash": "sha256-Bp//0Dq+qy6M1u7kZ8yY+odZ9yeZUNKAl78YY1DNOac=",
         "owner": "dwayne",
         "repo": "elm2nix",
-        "rev": "a599d6a93d106dbd2ca33e82114d05191834c79b",
+        "rev": "299b538e71e41986dfba9a6863ded52266c6d22c",
         "type": "github"
       },
       "original": {
         "owner": "dwayne",
         "repo": "elm2nix",
+        "rev": "299b538e71e41986dfba9a6863ded52266c6d22c",
         "type": "github"
       }
     },

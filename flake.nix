@@ -1,7 +1,7 @@
 {
   inputs = {
     elm2nix = {
-      url = "github:dwayne/elm2nix";
+      url = "github:dwayne/elm2nix?rev=299b538e71e41986dfba9a6863ded52266c6d22c";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
@@ -22,6 +22,8 @@
 
         elm = pkgs.callPackage ./nix/elm.nix {
           inherit buildElmApplication;
+
+          elmPackagePatches = elm2nix.lib.elmSafeVirtualDom.default;
         };
 
         serve = pkgs.callPackage ./nix/serve.nix {};
@@ -30,10 +32,6 @@
           type = "app";
           program = "${drv}";
         };
-
-        lydellVirtualDom = pkgs.callPackage ./nix/elm-safe-virtual-dom/lydell-virtual-dom.nix {};
-        lydellHtml = pkgs.callPackage ./nix/elm-safe-virtual-dom/lydell-html.nix {};
-        lydellBrowser = pkgs.callPackage ./nix/elm-safe-virtual-dom/lydell-browser.nix {};
       in
       {
         devShells.default = pkgs.mkShell {
@@ -95,8 +93,6 @@
         packages = {
           inherit app elm;
           default = app;
-
-          inherit lydellVirtualDom lydellHtml lydellBrowser;
         };
 
         apps = {
