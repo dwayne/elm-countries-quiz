@@ -14,10 +14,18 @@
         inherit (elm2nix.lib.elm2nix pkgs)
           buildElmApplication
           generateRegistryDat
-          prepareElmHomeScript;
+          prepareElmHomeScript
+          mkPatch
+          installPatchScript;
 
         app = pkgs.callPackage ./nix/app.nix {
           inherit generateRegistryDat prepareElmHomeScript;
+
+          esvdPatches = ''
+            ${installPatchScript (mkPatch elm2nix.lib.patches.lydellBrowser)}
+            ${installPatchScript (mkPatch elm2nix.lib.patches.lydellHtml)}
+            ${installPatchScript (mkPatch elm2nix.lib.patches.lydellVirtualDom)}
+          '';
         };
 
         elm = pkgs.callPackage ./nix/elm.nix {

@@ -6,6 +6,7 @@
 , pnpmConfigHook
 , stdenv
 
+, esvdPatches
 , generateRegistryDat
 , prepareElmHomeScript
 }:
@@ -15,8 +16,6 @@ let
 
   elmLock = ../elm.lock;
   registryDat = generateRegistryDat { inherit elmLock; };
-
-  esvdPatches = callPackage ./elm-safe-virtual-dom/patches.nix {};
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "elm-countries-quiz";
