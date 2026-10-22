@@ -1,12 +1,10 @@
 {
-  "name": "elm-parcel-template",
-  "version": "1.0.0",
-  "description": "",
+  "private": true,
   "scripts": {
-    "start": "parcel index.html",
-    "build": "parcel build index.html"
+    "dev": "parcel",
+    "build": "parcel build"
   },
-  "keywords": [],
+  "source": "src/index.html",
   "author": "Flavio Corpa <flaviocorpa@gmail.com>",
   "license": "MIT",
   "devDependencies": {
