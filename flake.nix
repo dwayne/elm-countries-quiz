@@ -46,9 +46,6 @@
           inputsFrom = [ project.devShell ];
 
           packages = [
-            pkgs.elmPackages.elm-json
-            pkgs.elmPackages.elm-review
-
             #
             # I'm using Elm 0.19.3 but elm-test-rs requires 0.19.1 or 0.19.2 to run the checks.
             # Why? The registry.dat file it uses is in the 0.19.1 format.
@@ -56,42 +53,6 @@
             #
             (pkgs.elmPackages.elm-test-rs.overrideAttrs { doCheck = false; })
           ];
-
-          shellHook = ''
-            f () {
-              elm-format                   \
-                "$PROJECT_ROOT"/src        \
-                "$PROJECT_ROOT"/review/src \
-                "$PROJECT_ROOT"/tests      \
-                --yes
-            }
-
-            r () {
-              elm-review
-            }
-
-            t () {
-              elm-test-rs "$PROJECT_ROOT"/tests/*.elm
-            }
-
-            c () {
-              rm -rf "$PROJECT_ROOT"/{.parcel-cache,dist,elm-stuff,node_modules}
-            }
-
-            s () {
-              pnpm dev
-            }
-
-            echo "Elm development environment loaded"
-            echo "All your dependencies have been installed"
-            echo ""
-            echo "Type 'f' to run elm-format"
-            echo "Type 'r' to run elm-review"
-            echo "Type 't' to run elm-test-rs"
-            echo "Type 'c' to remove build artifacts"
-            echo "Type 's' to start the development server"
-            echo ""
-          '';
         };
 
         packages = {

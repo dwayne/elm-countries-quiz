@@ -1,6 +1,7 @@
 { deploy
 , elm2nixLib
 , elmPackages
+, just
 , mkShell
 , nodejs
 , pnpm
@@ -14,6 +15,10 @@ mkShell {
     elm2nixLib.elm2nix
     elmPackages.elm
     elmPackages.elm-format
+    elmPackages.elm-json
+    elmPackages.elm-review
+    elmPackages.elm-test
+    just
     nodejs
     pnpm
   ];
@@ -21,7 +26,6 @@ mkShell {
   shellHook = ''
     export PROJECT_ROOT="$PWD"
     export PATH="$PROJECT_ROOT/node_modules/.bin:$PATH"
-    export PORT=8000
 
     if [ ! -d "$PROJECT_ROOT/node_modules" ]; then
       pnpm install --loglevel warn
