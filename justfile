@@ -10,6 +10,11 @@ dev:
 format:
   elm-format src review tests
 
+# Run sanity checks
+lint:
+  elm-format src review tests --validate
+  actionlint
+
 # Run elm-review
 review:
   elm-review src review tests

@@ -1,4 +1,5 @@
-{ deploy
+{ actionlint
+, deploy
 , elm2nixLib
 , elmPackages
 , just
@@ -11,6 +12,7 @@ mkShell {
   name = "shell";
 
   packages = [
+    actionlint
     deploy
     elm2nixLib.elm2nix
     elmPackages.elm
