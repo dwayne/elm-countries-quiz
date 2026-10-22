@@ -19,7 +19,7 @@ lint:
 review:
   elm-review src review tests
 
-# Run Elm tests
+# Run the tests
 test:
   elm-test-rs
 
