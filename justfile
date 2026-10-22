@@ -27,7 +27,7 @@ test:
 clean:
   rm -rf .parcel-cache dist elm-stuff node_modules
 
-alias s := dev
+alias d := dev
 alias f := format
 alias r := review
 alias t := test
