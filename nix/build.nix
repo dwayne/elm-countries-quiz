@@ -37,6 +37,12 @@ lib.makeOverridable (
       fileset = fs.unions (builtins.map (path: root + "/${path}") paths);
     };
 
+    # @swc/core >= 1.16.12 unpacks its native addon into a cache and rejects any
+    # cache whose ancestors another user can write to. In the Nix sandbox `/` is
+    # owned by an unmapped uid, so every candidate fails. The sandbox is
+    # single-user and ephemeral, so the check is safe to skip.
+    env.SWC_NATIVE_BINDING_CACHE_SKIP_SECURITY_CHECK = "1";
+
     nativeBuildInputs = [
       elmPackages.elm
       nodejs
