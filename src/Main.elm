@@ -255,7 +255,7 @@ view model =
                 [ Html.a
                     [ Attr.class "btn btn-ghost text-lg md:text-xl normal-case"
                     ]
-                    [ Html.text "🌍 Countries Quiz" ]
+                    [ Html.text "🌍 Countries Quiz (with nix-elm-parcel)" ]
                 ]
             , Html.div
                 [ Attr.class "flex-none" ]

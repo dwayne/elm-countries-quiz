@@ -6,6 +6,9 @@
   },
   "source": "src/index.html",
   "author": "Flavio Corpa <flaviocorpa@gmail.com>",
+  "contributors": [
+    "Dwayne Crooks <maintainer@dwaynecrooks.com>"
+  ],
   "license": "MIT",
   "devDependencies": {
     "@parcel/transformer-elm": "^2.16.4",

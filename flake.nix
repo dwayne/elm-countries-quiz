@@ -1,49 +1,50 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nix-utils-src = { url = "github:dwayne/nix-utils"; flake = false; };
     flake-elm2nix = {
       url = "github:dwayne/elm2nix/use-elm-0.19.3";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        nix-utils-src.follows = "nix-utils-src";
+      };
     };
-    flake-deploy = {
-      url = "github:dwayne/deploy";
-      inputs.nixpkgs.follows = "nixpkgs";
+    flake-nix-elm-parcel = {
+      url = "github:dwayne/nix-elm-parcel";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        nix-utils-src.follows = "nix-utils-src";
+        flake-elm2nix.follows = "flake-elm2nix";
+      };
     };
   };
 
-  outputs = { self, nixpkgs, flake-elm2nix, flake-deploy }:
+  outputs = { self, nixpkgs, nix-utils-src, flake-elm2nix, flake-nix-elm-parcel }:
     let
       lib = nixpkgs.lib;
-      supportedSystems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ];
-      eachSupportedSystem = f: lib.foldAttrs lib.mergeAttrs {} (map (s: lib.mapAttrs (_: v: { ${s} = v; }) (f s)) supportedSystems);
+      nixUtils = import nix-utils-src lib;
     in
-    eachSupportedSystem (system:
+    nixUtils.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ flake-elm2nix.overlays.default ];
-        };
-
-        elm2nixLib = flake-elm2nix.lib.mkLib pkgs;
-        deploy = flake-deploy.lib.mkDeploy pkgs;
-
-        project = pkgs.callPackage ./nix {
-          inherit elm2nixLib deploy;
-        };
-
-        site = project.build {
-          name = "elm-countries-quiz";
-          root = ./.;
-          hash = "sha256-5AIGDUe9QgFJIE5UlUi9Q2o8RlOzIacNAA8rjeKOAK0=";
-          extraPaths = [ ".postcssrc" "tailwind.config.js" ];
-          patches = flake-elm2nix.lib.elmSafeVirtualDomPatches.default;
+          overlays = [ flake-nix-elm-parcel.overlays.default ];
         };
       in
-      {
-        devShells.default = pkgs.mkShell {
-          name = "elm-countries-quiz";
+      pkgs.nixElmParcelPackages.defaultFlakeOutput {
+        name = "elm-countries-quiz";
+        root = ./.;
+        hash = "sha256-i9XiaMPLrVzQt68mn+y3ZejsJ2HGzObRtHcP/zPtuc0=";
 
-          inputsFrom = [ project.devShell ];
+        extraPaths = [ ".postcssrc" "tailwind.config.js" ];
+        patches = flake-elm2nix.lib.elmSafeVirtualDomPatches.default;
+
+        deployBranch = "gh-pages";
+
+        devShellArgs = {
+          env = {
+            PROJECT_ELM_TEST_RUNNER = "elm-test-rs";
+          };
 
           packages = [
             #
@@ -54,18 +55,6 @@
             (pkgs.elmPackages.elm-test-rs.overrideAttrs { doCheck = false; })
           ];
         };
-
-        packages = {
-          inherit site;
-          default = site;
-        };
-
-        apps = {
-          inherit (site) serve deploy;
-          default = site.serve;
-        };
-
-        checks = { inherit site; };
       }
     );
 }

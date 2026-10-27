@@ -24,7 +24,7 @@ Start the development server with `just dev` and develop the application in [`sr
 ## Deploy
 
 ```bash
-make deploy
+just deploy
 ```
 
 Deploy the application to the `gh-pages` branch.
