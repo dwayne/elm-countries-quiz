@@ -47,12 +47,7 @@
           };
 
           packages = [
-            #
-            # I'm using Elm 0.19.3 but elm-test-rs requires 0.19.1 or 0.19.2 to run the checks.
-            # Why? The registry.dat file it uses is in the 0.19.1 format.
-            # The simplest solution for now is to just disable those checks.
-            #
-            (pkgs.elmPackages.elm-test-rs.overrideAttrs { doCheck = false; })
+            pkgs.elmPackages.elm-test-rs
           ];
         };
       }
